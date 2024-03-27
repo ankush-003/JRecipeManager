@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: JRecipeManager
+
+  dataSource:
+    url: jdbc:postgresql://ganyadb-9096.8nk.gcp-asia-southeast1.cockroachlabs.cloud:26257/defaultdb?sslmode=require&password=KA8gZN7CGDUn1Za0XXYrng&user=ganya
+    username: ganya
+    password: KA8gZN7CGDUn1Za0XXYrng
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        jdbc:
+          lob:
+            non_contextual_creation: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect

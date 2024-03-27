@@ -31,4 +31,7 @@ public class User {
     // relationships
     @OneToMany(mappedBy = "createdBy")
     private List<Recipe> createdRecipes;
+
+    @ManyToMany(mappedBy = "favUsers")
+    private List<Recipe> favRecipes;
 }

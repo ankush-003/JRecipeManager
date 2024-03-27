@@ -30,9 +30,9 @@ public class Recipe {
     private Integer cookingTime;
 
 
-    @Column(name="difficulty_level", columnDefinition = "ENUM('EASY', 'MEDIUM', 'HARD')")
+    @Column(name="difficulty_level")
     @Enumerated(EnumType.STRING)
-    private String difficultyLevel;
+    private DifficultyLevel difficultyLevel;
 
     @Column(name="rating")
     private Double rating;
@@ -52,4 +52,12 @@ public class Recipe {
             inverseJoinColumns = @JoinColumn(name = "ingredient_id")
     )
     private List<Ingredient> ingredients;
+
+    @ManyToMany
+    @JoinTable(
+            name = "recipe_tags",
+            joinColumns = @JoinColumn(name = "recipe_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private List<User> favUsers;
 }

@@ -1,14 +1,15 @@
 package com.ankush003.RecipeManager.Model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -22,13 +23,11 @@ public class Recipe {
     @Column(name="title")
     private String title;
 
-    @Lob
     @Column(name="instructions")
     private String instructions;
     
     @Column(name="cooking_time")
     private Integer cookingTime;
-
 
     @Column(name="difficulty_level")
     @Enumerated(EnumType.STRING)
@@ -37,27 +36,25 @@ public class Recipe {
     @Column(name="rating")
     private Double rating;
 
+    @Column(name="ingredients")
+    private String ingredients;
+
     // relations
     @ManyToOne
     @JoinColumn(name="created_by")
+    @JsonBackReference(value= "created_recipes")
     private User createdBy;
 
-    @OneToMany(mappedBy = "recipe")
+    @OneToMany(mappedBy = "recipe", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JsonManagedReference(value = "recipe_reviews")
     private List<Review> reviews;
 
-    @ManyToMany
-    @JoinTable(
-            name = "recipe_ingredients",
-            joinColumns = @JoinColumn(name = "recipe_id"),
-            inverseJoinColumns = @JoinColumn(name = "ingredient_id")
-    )
-    private List<Ingredient> ingredients;
-
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
             name = "recipe_tags",
             joinColumns = @JoinColumn(name = "recipe_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
+    @JsonIgnoreProperties
     private List<User> favUsers;
 }

@@ -1,14 +1,13 @@
 package com.ankush003.RecipeManager.Model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -22,16 +21,17 @@ public class User {
     @Column(name="name")
     private String name;
 
-    @Column(name="email")
+    @Column(name="email", unique = true)
     private String email;
 
     @Column(name="password")
     private String password;
 
     // relationships
-    @OneToMany(mappedBy = "createdBy")
+    @OneToMany(mappedBy = "createdBy", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JsonManagedReference(value = "created_recipes")
     private List<Recipe> createdRecipes;
 
-    @ManyToMany(mappedBy = "favUsers")
+    @ManyToMany(mappedBy = "favUsers", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Recipe> favRecipes;
 }

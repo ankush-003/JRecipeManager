@@ -1,12 +1,11 @@
 package com.ankush003.RecipeManager.Model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -14,15 +13,16 @@ import lombok.NoArgsConstructor;
 @Table(name="reviews")
 public class Review {
     @Id
+    @GeneratedValue
     private Long id;
 
-    @Lob
     @Column(name="review")
     private String review;
 
     // relationships
     @ManyToOne
     @JoinColumn(name="recipe_id")
+    @JsonBackReference(value = "recipe_reviews")
     private Recipe recipe;
 
     @ManyToOne
